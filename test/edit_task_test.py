@@ -1,6 +1,8 @@
 import requests
 
 def test_edit():
+    """создать задачу, изменить и проверить что ИД не поменялся"""
+
     body = {"title":"generated","completed":False}
     response = requests.post("https://todo-app-sky.herokuapp.com/", json=body)
     id = response.json()["id"]
@@ -8,8 +10,9 @@ def test_edit():
     body = {"title":"generated-1"}
     response = requests.patch(f'https://todo-app-sky.herokuapp.com/{id}', json=body)
     assert response.status_code == 200
-    
+    assert response.json()['id'] == id
+
     response = requests.get(f'https://todo-app-sky.herokuapp.com/{id}')
     assert response.status_code == 200
-    assert response.json()['title']=="generated-1"
+    assert response.json()['id']== id
     
